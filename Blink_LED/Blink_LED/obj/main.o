@@ -1,0 +1,32 @@
+XH
+H 1 areas 2 global symbols
+M main.c
+S _PWM8_Start Ref0000
+A text size 32 flags 0
+dbfile ./main.c
+dbfile E:\SIGR\BLINK_~1\BLINK_~1\main.c
+dbfunc e main 0 fV
+dbsym l delay 0 I
+dbline FFFFFFFF 0
+dbline 11 4
+dbline 12 4
+dbline 15 A
+dbline 1D 11
+dbline 2C 11
+dbline 2E 14
+dbline 2E 1A
+dbline 2E 1A
+dbline 2E 1F
+dbline 2F 2B
+dbline 1C 2B
+dbline FFFFFFFE 2D
+dbline 0 30
+S _main Def0000
+T 00 00 10 4F 38 02 56 01 00 56 00 00 10 7C 00 00
+R 00 00 00 00 02 0E 00 00
+T 00 0E 20 80 1B 45 00 04 56 01 00 56 00 00 77 01
+R 00 00 00 00
+T 00 1C 0F 00 00 52 01 11 30 52 00 31 80 19 F5 CF
+R 00 00 00 00
+T 00 2A F0 8F E5 38 FE 20 8F FF
+R 00 00 00 00

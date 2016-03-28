@@ -1,0 +1,102 @@
+ 0000                   cpu LMM
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile ./main.c
+ 0000                   .dbfile E:\SIGR\BLINK_~1\BLINK_~1\main.c
+ 0000                   .dbfunc e main _main fV
+ 0000           ;          delay -> X+0
+ 0000           _main::
+ 0000                   .dbline -1
+ 0000 10                push X
+ 0001 4F                mov X,SP
+ 0002 3802              add SP,2
+ 0004                   .dbline 17
+ 0004           ; //----------------------------------------------------------------------------
+ 0004           ; // C main line
+ 0004           ; //----------------------------------------------------------------------------
+ 0004           ; 
+ 0004           ; #include <m8c.h>        // part specific constants and macros
+ 0004           ; #include "PSoCAPI.h"    // PSoC API definitions for all User Modules
+ 0004           ; 
+ 0004           ; // DELAY is how long the LED will stay on or off
+ 0004           ; #define DELAY 30000
+ 0004           ; // Defining the LED to be on P02
+ 0004           ; #define LED_PIN 0b00000100 // This notation is defining a binary number
+ 0004           ; // The same task could be accomplished using hexidecimal or decimal
+ 0004           ; // #define LED_PIN 0x04 and #define LED_PIN 4 are all equivalent statements
+ 0004           ; 
+ 0004           ; 
+ 0004           ; void main(void)
+ 0004           ; {
+ 0004                   .dbline 18
+ 0004           ;       int delay = 0;
+ 0004 560100            mov [X+1],0
+ 0007 560000            mov [X+0],0
+ 000A                   .dbline 21
+ 000A           ;       //M8C_EnableGInt ; // Uncomment this line to enable Global Interrupts
+ 000A           ;       // Insert your main routine code here.
+ 000A           ;       PWM8_Start();
+ 000A 10                push X
+ 000B 7C0000            xcall _PWM8_Start
+ 000E 20                pop X
+ 000F 801B              xjmp L3
+ 0011           L2:
+ 0011                   .dbline 29
+ 0011           ;       /*
+ 0011           ;       LCD_Start();
+ 0011           ;       LCD_Position(0,0);
+ 0011           ;       LCD_PrCString("HELLO_WORLD");*/
+ 0011           ;       // Forever loop preventing the program from exiting when completed. If you didn't
+ 0011           ;       // have this you would have to reset the PSoC for the program to execute again.
+ 0011           ;       while (TRUE)
+ 0011           ;       {
+ 0011                   .dbline 44
+ 0011           ;               // Flipping the bit at pin LED_PIN which in our case is P02
+ 0011           ;               /*
+ 0011           ;               Taking the state of PRT0DR and XORing it with our predefined LED_PIN
+ 0011           ;               bitstring. This flips the bit or state of the pin(if the bit was a 1 it is
+ 0011           ;               now a 0 and vice versa.
+ 0011           ;               Let's say PRT0DR is 00000100 meaning that anything connected to P02 will be "on".
+ 0011           ;               Our LED_PIN constant is also 00000100 as defined above.
+ 0011           ;                       
+ 0011           ;               PRT0DR:                 00000100                                                 00000000
+ 0011           ;               LED_PIN:           ^00000100                                            ^00000100
+ 0011           ;                                               --------   the other case is     --------
+ 0011           ;               New PRT0DR:             00000000                                                 00000100
+ 0011           ;                                               P02 "off"                                                P02 "on"
+ 0011           ;               */
+ 0011           ;               PRT0DR ^= LED_PIN;
+ 0011 450004            xor REG[0],4
+ 0014                   .dbline 46
+ 0014           ;               // Software delay implemented as an empty counting for loop(wasted clock cycles)
+ 0014           ;               for(delay = 0; delay < DELAY; delay++);
+ 0014 560100            mov [X+1],0
+ 0017 560000            mov [X+0],0
+ 001A           L5:
+ 001A                   .dbline 46
+ 001A           L6:
+ 001A                   .dbline 46
+ 001A 7701              inc [X+1]
+ 001C 0F0000            adc [X+0],0
+ 001F                   .dbline 46
+ 001F 5201              mov A,[X+1]
+ 0021 1130              sub A,48
+ 0023 5200              mov A,[X+0]
+ 0025 3180              xor A,-128
+ 0027 19F5              sbb A,(117 ^ 0x80)
+ 0029 CFF0              jc L5
+ 002B           X1:
+ 002B                   .dbline 47
+ 002B           ;       }
+ 002B           L3:
+ 002B                   .dbline 28
+ 002B 8FE5              xjmp L2
+ 002D           X0:
+ 002D                   .dbline -2
+ 002D           L1:
+ 002D 38FE              add SP,-2
+ 002F 20                pop X
+ 0030                   .dbline 0 ; func end
+ 0030 8FFF              jmp .
+ 0032                   .dbsym l delay 0 I
+ 0032                   .dbend
